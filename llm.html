@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM — The Eras Tour 🎤</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #e8e8e8;
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ── HEADER / TOUR POSTER ── */
+        .tour-poster {
+            text-align: center;
+            padding: 80px 20px 60px;
+            background: linear-gradient(180deg, #1a0a2e 0%, #0a0a0a 100%);
+            border-bottom: 2px solid #c9a0dc;
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        .tour-poster::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 30% 40%, rgba(201,160,220,0.08) 0%, transparent 60%),
+                        radial-gradient(circle at 70% 60%, rgba(255,215,0,0.05) 0%, transparent 50%);
+        }
+        .tour-poster h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #c9a0dc, #ffd700, #ff6b6b, #5bcefa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+        .tour-poster .subtitle {
+            font-size: 1rem;
+            color: #999;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-top: 10px;
+            position: relative;
+        }
+        .tour-poster .tagline {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: #c9a0dc;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        /* ── ERA SECTION ── */
+        .era {
+            border-radius: 20px;
+            padding: 40px 35px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: transform 0.3s;
+        }
+        .era:hover { transform: translateY(-3px); }
+
+        .era-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            font-weight: 900;
+            opacity: 0.08;
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            line-height: 1;
+        }
+
+        .era-label {
+            font-size: 0.7rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            opacity: 0.7;
+        }
+
+        .era h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 6px;
+        }
+
+        .era .theme {
+            font-style: italic;
+            opacity: 0.6;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .era p, .era li {
+            font-size: 0.98rem;
+        }
+
+        .era ul {
+            padding-left: 0;
+            list-style: none;
+        }
+        .era ul li {
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .era ul li::before {
+            content: "✦ ";
+            opacity: 0.5;
+        }
+
+        .hl { font-weight: 700; }
+
+        /* ── GRID ── */
+        .grid2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .mini-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px;
+            padding: 22px;
+        }
+        .mini-card h3 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        /* ── ERA COLORS ── */
+        /* Debut */
+        .era-debut {
+            background: linear-gradient(135deg, rgba(0,100,80,0.15), rgba(0,60,60,0.08));
+            border-color: rgba(0,180,140,0.2);
+        }
+        .era-debut h2 { color: #00d4aa; }
+        .era-debut .era-label { color: #00d4aa; }
+        .era-debut .hl { color: #00d4aa; }
+
+        /* Fearless */
+        .era-fearless {
+            background: linear-gradient(135deg, rgba(255,215,0,0.12), rgba(255,180,0,0.06));
+            border-color: rgba(255,215,0,0.2);
+        }
+        .era-fearless h2 { color: #ffd700; }
+        .era-fearless .era-label { color: #ffd700; }
+        .era-fearless .hl { color: #ffd700; }
+
+        /* Speak Now */
+        .era-speaknow {
+            background: linear-gradient(135deg, rgba(160,80,220,0.15), rgba(120,40,180,0.06));
+            border-color: rgba(160,80,220,0.2);
+        }
+        .era-speaknow h2 { color: #c97dff; }
+        .era-speaknow .era-label { color: #c97dff; }
+        .era-speaknow .hl { color: #c97dff; }
+
+        /* Red */
+        .era-red {
+            background: linear-gradient(135deg, rgba(220,40,40,0.15), rgba(180,20,20,0.06));
+            border-color: rgba(220,40,40,0.2);
+        }
+        .era-red h2 { color: #ff5555; }
+        .era-red .era-label { color: #ff5555; }
+        .era-red .hl { color: #ff5555; }
+
+        /* 1989 */
+        .era-1989 {
+            background: linear-gradient(135deg, rgba(135,206,250,0.12), rgba(255,182,193,0.08));
+            border-color: rgba(135,206,250,0.2);
+        }
+        .era-1989 h2 { color: #87cefa; }
+        .era-1989 .era-label { color: #ffb6c1; }
+        .era-1989 .hl { color: #87cefa; }
+
+        /* reputation */
+        .era-reputation {
+            background: linear-gradient(135deg, rgba(30,30,30,0.6), rgba(10,10,10,0.8));
+            border-color: rgba(100,255,100,0.12);
+        }
+        .era-reputation h2 { color: #44ff44; }
+        .era-reputation .era-label { color: #44ff44; }
+        .era-reputation .hl { color: #44ff44; }
+
+        /* Lover */
+        .era-lover {
+            background: linear-gradient(135deg, rgba(255,150,180,0.12), rgba(180,130,255,0.08));
+            border-color: rgba(255,150,180,0.2);
+        }
+        .era-lover h2 { color: #ff96b4; }
+        .era-lover .era-label { color: #ff96b4; }
+        .era-lover .hl { color: #ff96b4; }
+
+        /* folklore */
+        .era-folklore {
+            background: linear-gradient(135deg, rgba(180,160,130,0.12), rgba(120,140,100,0.08));
+            border-color: rgba(180,160,130,0.2);
+        }
+        .era-folklore h2 { color: #c8b896; }
+        .era-folklore .era-label { color: #c8b896; }
+        .era-folklore .hl { color: #c8b896; }
+
+        /* evermore */
+        .era-evermore {
+            background: linear-gradient(135deg, rgba(160,100,60,0.12), rgba(100,70,40,0.08));
+            border-color: rgba(160,100,60,0.2);
+        }
+        .era-evermore h2 { color: #d4915e; }
+        .era-evermore .era-label { color: #d4915e; }
+        .era-evermore .hl { color: #d4915e; }
+
+        /* Midnights */
+        .era-midnights {
+            background: linear-gradient(135deg, rgba(30,40,100,0.2), rgba(10,10,40,0.3));
+            border-color: rgba(100,120,255,0.15);
+        }
+        .era-midnights h2 { color: #7b8cff; }
+        .era-midnights .era-label { color: #7b8cff; }
+        .era-midnights .hl { color: #7b8cff; }
+
+        /* TTPD */
+        .era-ttpd {
+            background: linear-gradient(135deg, rgba(200,200,200,0.06), rgba(100,100,100,0.04));
+            border-color: rgba(200,200,200,0.15);
+        }
+        .era-ttpd h2 { color: #d0d0d0; }
+        .era-ttpd .era-label { color: #999; }
+        .era-ttpd .hl { color: #e0e0e0; }
+
+        /* ── QUOTE ── */
+        .quote {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.4);
+            text-align: center;
+            margin: 40px 0;
+            padding: 0 30px;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #444;
+            font-size: 0.85rem;
+            border-top: 1px solid #1a1a1a;
+            margin-top: 30px;
+        }
+        footer .eras-dots {
+            letter-spacing: 6px;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 640px) {
+            .tour-poster h1 { font-size: 1.8rem; letter-spacing: 2px; }
+            .era { padding: 28px 20px; }
+            .era h2 { font-size: 1.5rem; }
+            .grid2 { grid-template-columns: 1fr; }
+            .era-number { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════ -->
+<!--              TOUR POSTER                -->
+<!-- ════════════════════════════════════════ -->
+<header class="tour-poster">
+    <h1>LLM</h1>
+    <p class="subtitle">Large Language Model</p>
+    <p class="tagline">"The Eras Tour — Entendendo IA através das eras de Taylor Swift"</p>
+</header>
+
+<div class="container">
+
+    <p class="quote">"I'm a Barbie girl, in a Barbie world... wait, wrong era." — Ninguém, nunca.</p>
+
+    <!-- ══════════════ ERA 1: DEBUT ══════════════ -->
+    <section class="era era-debut">
+        <span class="era-number">01</span>
+        <p class="era-label">Era I — Taylor Swift (2006)</p>
+        <h2>O que é uma LLM?</h2>
+        <p class="theme">"Onde tudo começa... como Taylor com seu violão no país."</p>
+        <p>
+            Assim como Taylor começou com country e franjela, uma <span class="hl">LLM (Large Language Model)</span>
+            começa simples: é um <span class="hl">modelo de inteligência artificial treinado em enormes quantidades de texto</span>
+            para entender, prever e gerar linguagem humana.
+        </p>
+        <p>
+            Elas são a tecnologia por trás de assistentes como <span class="hl">ChatGPT, Claude, Gemini e Llama</span>.
+            Assim como a Taylor construiu sua base com álbuns country antes de conquistar o mundo, as LLMs constroem
+            sua base aprendendo padrões estatísticos de bilhões de palavras.
+        </p>
+    </section>
+
+    <!-- ══════════════ ERA 2: FEARLESS ══════════════ -->
+    <section class="era era-fearless">
+        <span class="era-number">02</span>
+        <p class="era-label">Era II — Fearless (2008)</p>
+        <h2>Como funciona? A Arquitetura Transformer</h2>
+        <p class="theme">"Fearless — sem medo de decolar."</p>
+        <p>
+            Em 2017, o artigo <span class="hl">"Attention Is All You Need"</span> do Google introduziu a
+            arquitetura <span class="hl">Transformer</span> — o motor por trás de todas as LLMs modernas.
+            Foi o momento "Fearless" da IA: sem medo de mudar tudo.
+        </p>
+        <p>O funcionamento segue três etapas fundamentais:</p>
+        <ul>
+            <li><span class="hl">Pré-treinamento:</span> O modelo lê bilhões de textos da internet, livros e artigos — como Taylor absorvendo cada influência musical.</li>
+            <li><span class="hl">Predição de tokens:</span> Dado um texto, o modelo prevê a <span class="hl">próxima palavra mais provável</span>, sequência após sequência.</li>
+            <li><span class="hl">Fine-tuning:</span> O modelo é ajustado para tarefas específicas — como Taylor refinando seu som de album pra album.</li>
+        </ul>
+    </section>
+
+    <p class="quote">"People throw rocks at things that shine." — Fearless, Taylor Swift (2008)</p>
+
+    <!-- ══════════════ ERA 3: SPEAK NOW ══════════════ -->
+    <section class="era era-speaknow">
+        <span class="era-number">03</span>
+        <p class="era-label">Era III — Speak Now (2010)</p>
+        <h2>A Mecânica por Trás: Attention & Tokens</h2>
+        <p class="theme">"Speak Now — o momento em que a IA aprende a prestar atenção."</p>
+        <p>
+            O mecanismo <span class="hl">Self-Attention</span> é o coração do Transformer. Ele permite que o modelo
+            "<span class="hl">preste atenção</span>" a palavras anteriores para entender contexto —
+            como quando Taylor conecta referências sutilmente entre músicas de eras diferentes.
+        </p>
+        <div class="grid2">
+            <div class="mini-card">
+                <h3>🧠 Attention (Atenção)</h3>
+                <p>Permite que o modelo foque nas partes mais relevantes do texto de entrada ao gerar cada palavra.</p>
+            </div>
+            <div class="mini-card">
+                <h3>🔤 Tokens</h3>
+                <p>O texto é dividido em pedaços chamados tokens. Uma palavra pode ser 1 ou mais tokens. Modelos modernos processam de 4K a 1M+ tokens.</p>
+            </div>
+            <div class="mini-card">
+                <h3>📐 Parâmetros</h3>
+                <p>Podem conter de bilhões a trilhões de parâmetros (pesos). Quanto maior, maior a capacidade de compreensão.</p>
+            </div>
+            <div class="mini-card">
+                <h3>🔮 Context Window</h3>
+                <p>A "janela de contexto" define quantos tokens o modelo "lembra" de uma vez. É o palco da Taylor Swift — quanto maior, melhor o show.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════ ERA 4: RED ══════════════ -->
+    <section class="era era-red">
+        <span class="era-number">04</span>
+        <p class="era-label">Era IV — RED (2012)</p>
+        <h2>O Treinamento: Intenso e apaixonado</h2>
+        <p class="theme">"RED — paixão, caos, e dados em escala massiva."</p>
+        <p>
+            O treinamento de uma LLM é intenso como a era RED — repleto de emoção em escala massiva.
+            O modelo passa por <span class="hl">meses de processamento</span> em milhares de GPUs,
+            consumindo <span class="hl">energia equivalente a cidades pequenas</span>.
+        </p>
+        <ul>
+            <li><span class="hl">Aprendizado Autossupervisionado:</span> O modelo vê bilhões de frases com partes escondidas e tenta adivinhar o que falta.</li>
+            <li><span class="hl">Reforço com Feedback Humano (RLHF):</span> Humanos avaliam respostas, guiando o modelo a ser mais útil e seguro — como um produtor refinando um álbum.</li>
+            <li><span class="hl">Custo computacional:</span> Treinar o GPT-4 custou estimados <span class="hl">US$ 100 milhões</span>. É o equivalente a produzir um Eras Tour inteiro.</li>
+        </ul>
+    </section>
+
+    <p class="quote">"We are never ever, ever getting back together... com dados ruins." — Tradução livre</p>
+
+    <!-- ══════════════ ERA 5: 1989 ══════════════ -->
+    <section class="era era-1989">
+        <span class="era-number">05</span>
+        <p class="era-label">Era V — 1989 (2014)</p>
+        <h2>O Salto: De Country pra Pop — GPT e a Revolução</h2>
+        <p class="theme">"1989 — a revolução sonora da IA."</p>
+        <p>
+            Assim como Taylor abandonou o country pelo pop em 1989, a IA fez seu grande salto com o
+            <span class="hl">GPT</span>. A linha do tempo da revolução:
+        </p>
+        <ul>
+            <li><span class="hl">2017:</span> "Attention Is All You Need" — o Transformer nasce.</li>
+            <li><span class="hl">2018:</span> GPT-1 e BERT — primeiras LLMs de grande escala.</li>
+            <li><span class="hl">2020:</span> GPT-3 com <span class="hl">175 bilhões de parâmetros</span> surpreende o mundo.</li>
+            <li><span class="hl">2022:</span> ChatGPT é lançado e atinge <span class="hl">100 milhões de usuários em 2 meses</span>.</li>
+            <li><span class="hl">2023:</span> GPT-4, Claude 2, Llama 2, Gemini — era dos modelos multimodais.</li>
+            <li><span class="hl">2024-2025:</span> GPT-4o, Claude 3.5/4, Gemini 2.0, Llama 3 — mais rápidos, baratos e capacitados.</li>
+        </ul>
+    </section>
+
+    <!-- ══════════════ ERA 6: REPUTATION ══════════════ -->
+    <section class="era era-reputation">
+        <span class="era-number">06</span>
+        <p class="era-label">Era VI — reputation (2017)</p>
+        <h2>As Capacidades: Reputation precede</h2>
+        <p class="theme">"reputation — o lado sombrio e poderoso da IA."</p>
+        <p>
+            A reputação das LLMs é inabalável. Assim como Taylor desenterrou cobras e abraçou a escuridão,
+            esses modelos têm <span class="hl">capacidades impressionantes e intimidadoras</span>:
+        </p>
+        <ul>
+            <li><span class="hl">Gerar texto:</span> Artigos, roteiros, e-mails, poesia — tudo.</li>
+            <li><span class="hl">Escrever código:</span> Python, JavaScript, SQL — como GitHub Copilot e Cursor.</li>
+            <li><span class="hl">Traduzir idiomas:</span> Em dezenas de idiomas com fluência.</li>
+            <li><span class="hl">Raciocínio lógico:</span> Resolver problemas matemáticos e analíticos.</li>
+            <li><span class="hl">Análise de dados:</span> Resumir relatórios e extrair insights.</li>
+            <li><span class="hl">Multimodal:</span> Entender imagens, áudio e vídeo (GPT-4o, Gemini).</li>
+        </ul>
+    </section>
+
+    <p class="quote">"I got a list of names and yours is in red, underlined." — ...sobre os modelos de IA, provavelmente.</p>
+
+    <!-- ══════════════ ERA 7: LOVER ══════════════ -->
+    <section class="era era-lover">
+        <span class="era-number">07</span>
+        <p class="era-label">Era VII — Lover (2019)</p>
+        <h2>Principais LLMs: Onde o amor encontra a tecnologia</h2>
+        <p class="theme">"Lover — todos são bem-vindos neste fandom."</p>
+        <p>O ecossistema de LLMs é diverso e apaixonante, como um Lover Fest:</p>
+        <ul>
+            <li><span class="hl">GPT-4o / o3</span> — OpenAI (a Taylor Swift dos LLMs)</li>
+            <li><span class="hl">Claude 4</span> — Anthropic (o Ciudadano Iluminado)</li>
+            <li><span class="hl">Gemini</span> — Google DeepMind (o multihabilidoso)</li>
+            <li><span class="hl">Llama 3</span> — Meta (open-source, o debate livre)</li>
+            <li><span class="hl">Mistral</span> — Mistral AI (europeu, elegante)</li>
+            <li><span class="hl">DeepSeek V3</span> — DeepSeek AI (o challenger)</li>
+            <li><span class="hl">Qwen</span> — Alibaba (o gigante oriental)</li>
+        </ul>
+    </section>
+
+    <!-- ══════════════ ERA 8: FOLKLORE ══════════════ -->
+    <section class="era era-folklore">
+        <span class="era-number">08</span>
+        <p class="era-label">Era VIII — folklore (2020)</p>
+        <h2>Aplicações: Contando histórias reais</h2>
+        <p class="theme">"folklore — onde a IA encontra a alma humana."</p>
+        <p>
+            Assim como folklore marcou uma virada para Taylor — mais introspectiva e autêntica —
+            as LLMs estão sendo aplicadas em <span class="hl">áreas que impactam vidas reais</span>:
+        </p>
+        <ul>
+            <li><span class="hl">Saúde:</span> Diagnóstico assistido, resumo de prontuários, pesquisa de medicamentos.</li>
+            <li><span class="hl">Educação:</span> Tutores pessoais adaptativos — como um professor que se adapta a cada aluno.</li>
+            <li><span class="hl">Direito:</span> Análise de contratos e jurisprudência.</li>
+            <li><span class="hl">Atendimento ao cliente:</span> Chatbots inteligentes 24/7.</li>
+            <li><span class="hl">Criação de conteúdo:</span> Artigos, roteiros, legendas, e-mails.</li>
+            <li><span class="hl">Pesquisa científica:</span> Revisão de literatura e geração de hipóteses.</li>
+            <li><span class="hl">Programação:</span> Geração, depuração e revisão de código.</li>
+        </ul>
+    </section>
+
+    <p class="quote">"'tis the damn season — e a IA também escreve sobre névoa e melancolia."</p>
+
+    <!-- ══════════════ ERA 9: EVERMORE ══════════════ -->
+    <section class="era era-evermore">
+        <span class="era-number">09</span>
+        <p class="era-label">Era IX — evermore (2020)</p>
+        <h2>Limitações: O lado que ninguém quer ouvir</h2>
+        <p class="theme">"evermore — as sombras que a brilhantismo esconde."</p>
+        <p>Assim como evermore confronta temas escuros, as LLMs têm limitações importantes:</p>
+        <ul>
+            <li><span class="hl">Alucinações:</span> Podem gerar informações <span class="hl">falsas com total confiança</span> — como Taylor escrevendo sobre um personagem que não existe, mas com convicção total.</li>
+            <li><span class="hl">Vieses:</span> Refletem preconceitos dos dados de treinamento — "o espelho não mente."</li>
+            <li><span class="hl">Corte temporal:</span> Não conhecem eventos após sua data de treinamento — são presas do tempo.</li>
+            <li><span class="hl">Custo:</strong> Treinar grandes modelos custa milhões de dólares e energia absurda.</li>
+            <li><span class="hl">Privacidade:</span> Risco de vazar dados sensíveis presentes no treinamento.</li>
+        </ul>
+    </section>
+
+    <!-- ══════════════ ERA 10: MIDNIGHTS ══════════════ -->
+    <section class="era era-midnights">
+        <span class="era-number">10</span>
+        <p class="era-label">Era X — Midnights (2022)</p>
+        <h2>Exemplo Prático: As 3 da manhã com uma LLM</h2>
+        <p class="theme">"Midnights — meus pensamentos às 3am são agora resolvidos por IA."</p>
+        <p>Imagine que você está acordado às 3am, como Taylor, e pergunta ao ChatGPT:</p>
+        <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(123,140,255,0.15); border-radius:12px; padding:20px; margin:16px 0; font-family:'Courier New',monospace;">
+            <p style="color:#7b8cff; margin-bottom:8px;"><strong>Você:</strong> O que é machine learning?</p>
+            <p style="color:#4ade80;"><strong>LLM:</strong> Machine learning é um subcampo da IA que permite que sistemas aprendam e melhorem automaticamente a partir de dados, sem serem explicitamente programados para cada tarefa...</p>
+        </div>
+    </section>
+
+    <!-- ══════════════ ERA 11: TTPD ══════════════ -->
+    <section class="era era-ttpd">
+        <span class="era-number">11</span>
+        <p class="era-label">Era XI — The Tortured Poets Department (2024)</p>
+        <h2>O Futuro: Onde a IA vai?</h2>
+        <p class="theme">"The Tortured Poets Department — o que vem depois de tudo isso?"</p>
+        <p>
+            Assim como a era mais recente de Taylor explora profundidade emocional e intelectual,
+            o futuro das LLMs aponta para algo ainda mais <span class="hl">profundo e integrado</span>:
+        </p>
+        <ul>
+            <li><span class="hl">Agentes autônomos:</span> IAs que executam tarefas complexas de ponta a ponta.</li>
+            <li><span class="hl">Raciocínio avançado:</span> Modelos que pensam antes de responder (Chain of Thought).</li>
+            <li><span class="hl">Multimodal total:</span> Texto + imagem + áudio + vídeo + código, tudo integrado.</li>
+            <li><span class="hl">Personalização:</span> Modelos que se adaptam ao estilo e preferências individuais.</li>
+            <li><span class="hl">Open-source:</span> Democratização da IA — como Taylor liberando seus álbuns no streaming.</li>
+            <li><span class="hl">Regulação:</span> Leis e normas para uso ético e responsável da IA.</li>
+        </ul>
+    </section>
+
+    <p class="quote">"Long story short, I survived." — Taylor Swift, e a IA também vai. Talvez.</p>
+
+    <!-- ══════════════ FOOTER ══════════════ -->
+    <footer>
+        <div class="eras-dots">🟢 🟡 🟣 🔴 🔵 ⬛ 🩷 🤎 🟤 🔵 ⬜</div>
+        <p>Sistemas de Informação 2026-2 — Trabalho Acadêmico</p>
+        <p style="margin-top:4px; opacity:0.5;">Inspirado nas Eras Tour de Taylor Swift 🎤</p>
+    </footer>
+
+</div>
+
+</body>
+</html>
